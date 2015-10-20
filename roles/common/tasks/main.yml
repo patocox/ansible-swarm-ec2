@@ -1,0 +1,4 @@
+---
+
+- name: Update OS
+  apt: update_cache=yes
