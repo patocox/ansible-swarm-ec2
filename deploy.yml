@@ -11,6 +11,8 @@
      
      -  name: Provision admin node on EC2
         ec2:
+           aws_access_key: "{{ AWS_ACCESS_KEY }}"
+           aws_secret_key: "{{ AWS_SECRET_KEY }}"
            key_name: "{{ KEY_NAME }}" 
            group: "{{ AWS_SECURITY_GROUP }}"
            instance_type: t2.micro
@@ -21,6 +23,8 @@
            assign_public_ip: yes
            instance_tags:
               Name: Admin
+        tags:
+          - deploy_admin
         register: admin
 
      -  name: Add admin node to host group
@@ -34,7 +38,6 @@
 -  name: Apply to Admin node
    hosts: admin
    remote_user: ubuntu
-   sudo: True
    vars_files:
      - vars/external_vars.yml
 
