@@ -8,23 +8,38 @@
      - vars/external_vars.yml 
 
    tasks:
+
+     -  name: Configure EC2 Security Group.
+        ec2_group:
+          name: swarm-admin
+          description: Security Group for swarm admin
+          region: "{{ EC2_REGION }}" 
+          state: present
+          rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          rules_egress: []
      
      -  name: Provision admin node on EC2
         ec2:
-           aws_access_key: "{{ AWS_ACCESS_KEY }}"
-           aws_secret_key: "{{ AWS_SECRET_KEY }}"
-           key_name: "{{ KEY_NAME }}" 
-           group: "{{ AWS_SECURITY_GROUP }}"
-           instance_type: t2.micro
-           image: ami-df6a8b9b
-           wait: true
-           vpc_subnet_id: "{{ AWS_SUBNET_ID }}"
-           region: "{{ EC2_REGION }}"
-           assign_public_ip: yes
-           instance_tags:
-              Name: Admin-Swarm
-        tags:
-          - deploy_admin
+          aws_access_key: "{{ AWS_ACCESS_KEY }}"
+          aws_secret_key: "{{ AWS_SECRET_KEY }}"
+          key_name: "{{ KEY_NAME }}" 
+          group: "swarm-admin"
+          instance_type: t2.micro
+          image: ami-df6a8b9b
+          wait: true
+          vpc_subnet_id: "{{ AWS_SUBNET_ID }}"
+          region: "{{ EC2_REGION }}"
+          assign_public_ip: yes
+          exact_count: 1
+          count_tag:
+             Name: Admin-Swarm
+          instance_tags:
+             Name: Admin-Swarm
+             role: admin
         register: admin
 
      -  name: Add admin node to host group
@@ -42,6 +57,5 @@
      - vars/external_vars.yml
 
    roles:
-     - common
-     - docker
-     - swarm
+     - { role: docker, tags: docker }
+     - { role: swarm, tags: swarm }

@@ -1,6 +1,6 @@
 ---
 -  name: Teardown Swarm
-   hosts: tag_Name_Admin-Swarm
+   hosts: tag_role_admin
    remote_user: ubuntu
    vars_files:
       - vars/external_vars.yml 
@@ -17,7 +17,7 @@
        ignore_errors: yes
 
 -  name: Teardown Admin  
-   hosts: tag_Name_Admin-Swarm
+   hosts: tag_role_admin
    connection: local
    vars_files:
      - vars/external_vars.yml 
