@@ -2,6 +2,11 @@
 
 This playbook allows you to providion a docker-swarm on Amazon EC2 and provides a simple teardown playbook to remove the cluster. The deploy.yml playbook creates a swarm-admin instance, as the control point for the swarm.
 
+### Requirements
+   * Ansible 1.9+
+   * python >= 2.6
+   * boto
+
 ### Environment Variables
 EVs for provisioing on EC2 are located at `vars/external_vars.yml`. Docker-Machine, used to create the swarm, needs a couple extra EVs for provisioing a swarm. Add your specifcs to this file.
 
