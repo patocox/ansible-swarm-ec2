@@ -20,7 +20,11 @@
             from_port: 22
             to_port: 22
             cidr_ip: 0.0.0.0/0
-          rules_egress: []
+          rules_egress:
+          - proto: all
+            from_port: all
+            to_port: all
+            cidr_ip: 0.0.0.0/0
      
      -  name: Provision admin node on EC2
         ec2:
