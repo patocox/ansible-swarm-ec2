@@ -19,10 +19,10 @@
            image: ami-df6a8b9b
            wait: true
            vpc_subnet_id: "{{ AWS_SUBNET_ID }}"
-           region: "{{ AWS_DEFAULT_REGION }}"
+           region: "{{ EC2_REGION }}"
            assign_public_ip: yes
            instance_tags:
-              Name: Admin
+              Name: Admin-Swarm
         tags:
           - deploy_admin
         register: admin
@@ -43,4 +43,5 @@
 
    roles:
      - common
-     - admin
+     - docker
+     - swarm

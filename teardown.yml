@@ -1,0 +1,32 @@
+---
+
+
+-  name: Teardown Swarm
+   hosts: tag_Name_Admin-Swarm
+   remote_user: ubuntu
+   vars_files:
+      - vars/external_vars.yml 
+   tasks:
+
+    -  name: Remove Swarm-nodes
+       command: docker-machine rm swarm-node-{{ item }}
+       with_sequence: count={{ NODE_COUNT }}
+       ignore_errors: yes
+
+    -  name: Remove Swarm-Master
+       command: docker-machine rm swarm-master
+       ignore_errors: yes
+
+-  name: Teardown Admin  
+   hosts: tag_Name_Admin-Swarm
+   connection: local
+   vars_files:
+     - vars/external_vars.yml 
+   
+   tasks:
+   
+   - name: Terminate Admin
+     ec2: 
+       state: 'absent'
+       region: '{{ EC2_REGION }}'
+       instance_ids: '{{ ec2_id }}'
