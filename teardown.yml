@@ -1,11 +1,10 @@
 ---
-
-
 -  name: Teardown Swarm
    hosts: tag_Name_Admin-Swarm
    remote_user: ubuntu
    vars_files:
       - vars/external_vars.yml 
+   
    tasks:
 
     -  name: Remove Swarm-nodes
