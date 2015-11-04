@@ -1,5 +1,10 @@
 ---
 
+-  name: Install zip
+   apt: name=zip state=present
+   become: yes
+   become_method: sudo
+
 -  name: Install apt_key for Docker repo
    apt_key: keyserver=hkp://pgp.mit.edu:80 id=58118E89F3A912897C070ADBF76221572C52609D
    become: yes
@@ -10,7 +15,7 @@
    become: yes
    become_method: sudo     
 
--  name: Install Docker
+-  name: Install Docker Engine Latest
    apt: update_cache=yes name=docker-engine
    become: yes
    become_method: sudo     
@@ -18,11 +23,17 @@
 -  name: Change permissions on /usr/local/bin
    shell: sudo chown -R $(whoami) /usr/local/bin
 
--  name: Install Docker-Machine
-   get_url: url=https://github.com/docker/machine/releases/download/v0.3.0/docker-machine_linux-amd64 dest=/usr/local/bin/docker-machine 
+-  name: Install Docker-Machine v0.5.0
+   get_url: url=https://github.com/docker/machine/releases/download/v0.5.0/docker-machine_linux-amd64.zip dest=/usr/local/bin
 
--  name: Install Docker-Compose
-   shell: curl -L https://github.com/docker/compose/releases/download/1.3.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+-  name: Unzip Docker-Machine binary
+   unarchive: src=/usr/local/bin/docker-machine_linux-amd64.zip dest=/usr/local/bin copy=no  
+
+-  name: Remove Docker-Machine zip file
+   file: path=/usr/local/bin/docker-machine_linux-amd64.zip state=absent
+
+-  name: Install Docker-Compose v1.5.0
+   get_url: url=https://github.com/docker/compose/releases/download/1.5.0/docker-compose-Linux-x86_64 dest=/usr/local/bin/docker-compose
 
 -  name: Change permission on docker binaries
    file: path=/usr/local/bin/{{ item }} mode=0555
