@@ -25,7 +25,44 @@
             from_port: all
             to_port: all
             cidr_ip: 0.0.0.0/0
-     
+
+     -  name: Configure Docker Networking Security Group.
+        ec2_group:
+          name: docker-networking
+          description: Security Group for docker networking
+          region: "{{ EC2_REGION }}" 
+          state: present
+          rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 2376
+            to_port: 2376
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 7946
+            to_port: 7946
+            cidr_ip: 0.0.0.0/0
+          - proto: udp
+            from_port: 7946
+            to_port: 7946
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 8500
+            to_port: 8500
+            cidr_ip: 0.0.0.0/0
+          - proto: udp
+            from_port: 4789
+            to_port: 4789
+            cidr_ip: 0.0.0.0/0
+          rules_egress:
+          - proto: all
+            from_port: all
+            to_port: all
+            cidr_ip: 0.0.0.0/0
+
      -  name: Provision admin node on EC2
         ec2:
           aws_access_key: "{{ AWS_ACCESS_KEY }}"
@@ -62,4 +99,5 @@
 
    roles:
      - { role: docker, tags: docker }
+     - { role: consul, tags: consul }
      - { role: swarm, tags: swarm }

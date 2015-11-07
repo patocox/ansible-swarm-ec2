@@ -4,7 +4,7 @@
    remote_user: ubuntu
    vars_files:
       - vars/external_vars.yml 
-   
+
    tasks:
 
     -  name: Remove Swarm-nodes
@@ -16,14 +16,18 @@
        command: docker-machine rm swarm-master
        ignore_errors: yes
 
+    -  name: Remove Consul node
+       command: docker-machine rm sw-consul
+       ignore_errors: yes
+
 -  name: Teardown Admin  
    hosts: tag_role_admin
    connection: local
    vars_files:
      - vars/external_vars.yml 
-   
+
    tasks:
-   
+
    - name: Terminate Admin
      ec2: 
        state: 'absent'
